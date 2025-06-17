@@ -1,24 +1,20 @@
-package com.example.identity_service.dto.request;
+package com.example.identity_service.dto.response;
 
-import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
 
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class UserCreationRequest {
-    @Size(min = 3, message = "USER_INVALID")
+public class UserResponse {
+    String id;
     String name;
-
-    @Size(min = 8, message = "PASS_INVALID")
     String password;
     String firstName;
     String lastName;
-    
     LocalDate birthDate;
 }
