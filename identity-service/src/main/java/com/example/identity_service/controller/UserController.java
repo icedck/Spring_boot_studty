@@ -22,32 +22,38 @@ public class UserController {
     UserService userService;
 
     @PostMapping
-    public ApiResponse<User> createUser(@RequestBody @Valid UserCreationRequest request) {
-        ApiResponse<User> response = new ApiResponse<>();
-
-        response.setResult(userService.createUser(request));
-
-        return response;
+    public ApiResponse<UserResponse> createUser(@RequestBody @Valid UserCreationRequest request) {
+        return ApiResponse.<UserResponse>builder()
+                .result(userService.createUser(request))
+                .build();
     }
 
     @GetMapping
-    public List<User> getAllUsers() {
-        return userService.getAllUsers();
+    public ApiResponse<List<UserResponse>> getAllUsers() {
+        return ApiResponse.<List<UserResponse>>builder()
+                .result(userService.getAllUsers())
+                .build();
     }
 
     @GetMapping("/{userId}")
-    public UserResponse getUserById(@PathVariable String userId) {
-        return userService.getUserById(userId);
+    public ApiResponse<UserResponse> getUserById(@PathVariable String userId) {
+        return ApiResponse.<UserResponse>builder()
+                .result(userService.getUserById(userId))
+                .build();
     }
 
     @PutMapping("/{userId}")
-    public UserResponse updateUser(@PathVariable String userId,@RequestBody UserUpdateRequest request) {
-        return userService.updateUser(userId, request);
+    public ApiResponse<UserResponse> updateUser(@PathVariable String userId,@RequestBody UserUpdateRequest request) {
+        return ApiResponse.<UserResponse>builder()
+                .result(userService.updateUser(userId, request))
+                .build();
     }
 
     @DeleteMapping("/{userId}")
-    public String deleteUser(@PathVariable String userId) {
+    public ApiResponse<String> deleteUser(@PathVariable String userId) {
         userService.deleteUser(userId);
-        return "User deleted";
+        return ApiResponse.<String>builder()
+                .result("User deleted")
+                .build();
     }
 }

@@ -18,6 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor // thay thế cho @Autowired
@@ -28,7 +29,7 @@ public class UserService {
 
     UserMapper userMapper;
 
-    public User createUser(UserCreationRequest request) {
+    public UserResponse createUser(UserCreationRequest request) {
 //        User user = new User();
 
         if (userRepository.existsByName(request.getName()))
@@ -44,7 +45,7 @@ public class UserService {
 //        user.setLastName(request.getLastName());
 //        user.setBirthDate(request.getBirthDate());
 
-        return userRepository.save(user);
+        return userMapper.toUserResponse(userRepository.save(user));
     }
 
     public UserResponse updateUser(String userId, UserUpdateRequest request) {
@@ -60,8 +61,8 @@ public class UserService {
         return userMapper.toUserResponse(userRepository.save(user)); //Mapping data
     }
 
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    public List<UserResponse> getAllUsers() {
+        return userRepository.findAll().stream().map(userMapper::toUserResponse).collect(Collectors.toList());
     }
 
     public UserResponse getUserById(String id) {
